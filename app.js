@@ -10,6 +10,7 @@ const cookieParser = require('cookie-parser');
 const authRoutes = require('./routes/auth.js');
 const userRoutes = require('./routes/user.js');
 const tourRoutes = require('./routes/tour.js');
+const reviewRoutes = require('./routes/review.js');
 const { globalErrorsHandler } = require('./controllers/errorController.js');
 const AppError = require('./util/appError.js');
 
@@ -48,6 +49,7 @@ app.use(mongoSanitize());
 app.use('/api/v1', authRoutes);
 app.use('/api/v1/users', userRoutes);
 app.use('/api/v1/tours', tourRoutes);
+app.use('/api/v1/reviews', reviewRoutes);
 
 app.all('*', (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
