@@ -1,26 +1,26 @@
-const mongoose = require("mongoose");
-const crypto = require("crypto");
-const validator = require("validator");
-const bcrypt = require("bcrypt");
+const mongoose = require('mongoose');
+const crypto = require('crypto');
+const validator = require('validator');
+const bcrypt = require('bcrypt');
 
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: [true, "Name is required"],
+    required: [true, 'Name is required'],
   },
   username: {
     type: String,
     unique: true,
-    required: true
+    required: true,
   },
   email: {
     type: String,
-    required: [true, "Email is required"],
+    required: [true, 'Email is required'],
     unique: true,
     lowercase: true,
     validate: {
       validator: (value) => validator.isEmail(value),
-      message: "Invalid email address",
+      message: 'Invalid email address',
     },
   },
   password: {
@@ -44,24 +44,24 @@ const userSchema = new mongoose.Schema({
         );
       },
       message:
-        "Password must contain at least 1 uppercase letter, 1 lowercase letter, 1 number, 1 symbol, and be at least 8 characters long",
+        'Password must contain at least 1 uppercase letter, 1 lowercase letter, 1 number, 1 symbol, and be at least 8 characters long',
     },
   },
   passwordConfirm: {
     type: String,
-    required: [true, "Please confirm your password"],
+    required: [true, 'Please confirm your password'],
     validate: {
       // This only works on CREATE and SAVE!!!
       validator: function (value) {
         return value === this.password;
       },
-      message: "Passwords do not match",
+      message: 'Passwords do not match',
     },
   },
   role: {
     type: String,
-    enum: ["user", "admin"],
-    default: "user",
+    enum: ['user', 'admin', 'guide', 'lead-guide'],
+    default: 'user',
   },
   photo: String,
   passwordChangedAt: Date,
@@ -74,10 +74,10 @@ const userSchema = new mongoose.Schema({
   },
 });
 
-userSchema.pre("save", async function (next) {
+userSchema.pre('save', async function (next) {
   const user = this;
 
-  if (!user.isModified("password")) {
+  if (!user.isModified('password')) {
     return next();
   }
 
@@ -93,8 +93,8 @@ userSchema.pre("save", async function (next) {
   next();
 });
 
-userSchema.pre("save", function (next) {
-  if (!this.isModified("password") || this.isNew) return next();
+userSchema.pre('save', function (next) {
+  if (!this.isModified('password') || this.isNew) return next();
 
   this.passwordChangedAt = Date.now() - 1000;
   next();
@@ -126,18 +126,18 @@ userSchema.methods.changedPasswordAfter = function (JWTTimestamp) {
 };
 
 userSchema.methods.createPasswordResetToken = function () {
-  const resetToken = crypto.randomBytes(32).toString("hex");
+  const resetToken = crypto.randomBytes(32).toString('hex');
 
   this.resetToken = crypto
-    .createHash("sha256")
+    .createHash('sha256')
     .update(resetToken)
-    .digest("hex");
+    .digest('hex');
 
   this.resetTokenExpiry = Date.now() + 10 * 60 * 1000;
 
   return resetToken;
 };
 
-const User = mongoose.model("User", userSchema);
+const User = mongoose.model('User', userSchema);
 
 module.exports = User;

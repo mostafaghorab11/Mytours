@@ -10,7 +10,7 @@ const {
   topFive,
   getMonthlyPlan
   // checkId
-} = require('../controllers/tours');
+} = require('../controllers/tour');
 
 const router = express.Router();
 

@@ -1,5 +1,6 @@
 [
   {
+    "username":"Jonas Schmedtmann",
     "_id": "5c8a1d5b0190b214360dc057",
     "name": "Jonas Schmedtmann",
     "email": "admin@natours.io",
@@ -9,6 +10,7 @@
     "password": "$2a$12$Q0grHjH9PXc6SxivC8m12.2mZJ9BbKcgFpwSG4Y1ZEII8HJVzWeyS"
   },
   {
+    "username":"Lourdes Browning",
     "_id": "5c8a1dfa2f8fb814b56fa181",
     "name": "Lourdes Browning",
     "email": "loulou@example.com",
@@ -20,6 +22,7 @@
   {
     "_id": "5c8a1e1a2f8fb814b56fa182",
     "name": "Sophie Louise Hart",
+    "username": "Sophie Louise Hart",
     "email": "sophie@example.com",
     "role": "user",
     "active": true,
@@ -29,6 +32,7 @@
   {
     "_id": "5c8a1ec62f8fb814b56fa183",
     "name": "Ayla Cornell",
+    "username": "Ayla Cornell",
     "email": "ayls@example.com",
     "role": "user",
     "active": true,
@@ -38,6 +42,7 @@
   {
     "_id": "5c8a1f292f8fb814b56fa184",
     "name": "Leo Gillespie",
+    "username": "Leo Gillespie",
     "email": "leo@example.com",
     "role": "guide",
     "active": true,
@@ -47,6 +52,7 @@
   {
     "_id": "5c8a1f4e2f8fb814b56fa185",
     "name": "Jennifer Hardy",
+    "username": "Jennifer Hardy",
     "email": "jennifer@example.com",
     "role": "guide",
     "active": true,
@@ -56,6 +62,7 @@
   {
     "_id": "5c8a201e2f8fb814b56fa186",
     "name": "Kate Morrison",
+    "username": "Kate Morrison",
     "email": "kate@example.com",
     "role": "guide",
     "active": true,
@@ -65,6 +72,7 @@
   {
     "_id": "5c8a20d32f8fb814b56fa187",
     "name": "Eliana Stout",
+    "username": "Eliana Stout",
     "email": "eliana@example.com",
     "role": "user",
     "active": true,
@@ -74,6 +82,7 @@
   {
     "_id": "5c8a211f2f8fb814b56fa188",
     "name": "Cristian Vega",
+    "username": "Cristian Vega",
     "email": "chris@example.com",
     "role": "user",
     "active": true,
@@ -83,6 +92,7 @@
   {
     "_id": "5c8a21d02f8fb814b56fa189",
     "name": "Steve T. Scaife",
+    "username": "Steve T. Scaife",
     "email": "steve@example.com",
     "role": "lead-guide",
     "active": true,
@@ -92,6 +102,7 @@
   {
     "_id": "5c8a21f22f8fb814b56fa18a",
     "name": "Aarav Lynn",
+    "username": "Aarav Lynn",
     "email": "aarav@example.com",
     "role": "lead-guide",
     "active": true,
@@ -101,6 +112,7 @@
   {
     "_id": "5c8a22c62f8fb814b56fa18b",
     "name": "Miyah Myles",
+    "username": "Miyah Myles",
     "email": "miyah@example.com",
     "role": "lead-guide",
     "active": true,
@@ -110,6 +122,7 @@
   {
     "_id": "5c8a23412f8fb814b56fa18c",
     "name": "Ben Hadley",
+    "username": "Ben Hadley",
     "email": "ben@example.com",
     "role": "guide",
     "active": true,
@@ -119,6 +132,7 @@
   {
     "_id": "5c8a23c82f8fb814b56fa18d",
     "name": "Laura Wilson",
+    "username": "Laura Wilson",
     "email": "laura@example.com",
     "role": "user",
     "active": true,
@@ -128,6 +142,7 @@
   {
     "_id": "5c8a23de2f8fb814b56fa18e",
     "name": "Max Smith",
+    "username": "Max Smith",
     "email": "max@example.com",
     "role": "user",
     "active": true,
@@ -137,6 +152,7 @@
   {
     "_id": "5c8a24282f8fb814b56fa18f",
     "name": "Isabel Kirkland",
+    "username": "Isabel Kirkland",
     "email": "isabel@example.com",
     "role": "user",
     "active": true,
@@ -146,6 +162,7 @@
   {
     "_id": "5c8a24402f8fb814b56fa190",
     "name": "Alexander Jones",
+    "username": "Alexander Jones",
     "email": "alex@example.com",
     "role": "user",
     "active": true,
@@ -155,6 +172,7 @@
   {
     "_id": "5c8a245f2f8fb814b56fa191",
     "name": "Eduardo Hernandez",
+    "username": "Eduardo Hernandez",
     "email": "edu@example.com",
     "role": "user",
     "active": true,
@@ -164,6 +182,7 @@
   {
     "_id": "5c8a24822f8fb814b56fa192",
     "name": "John Riley",
+    "username": "John Riley",
     "email": "john@example.com",
     "role": "user",
     "active": true,
@@ -173,6 +192,7 @@
   {
     "_id": "5c8a24a02f8fb814b56fa193",
     "name": "Lisa Brown",
+    "username": "Lisa Brown",
     "email": "lisa@example.com",
     "role": "user",
     "active": true,

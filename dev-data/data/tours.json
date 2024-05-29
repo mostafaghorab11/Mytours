@@ -1,5 +1,6 @@
 [
   {
+    "priceDiscount": 50,
     "startLocation": {
       "description": "Miami, USA",
       "type": "Point",
@@ -14,6 +15,7 @@
       "2021-07-20T09:00:00.000Z",
       "2021-08-18T09:00:00.000Z"
     ],
+    "country": "USA",
     "_id": "5c88fa8cf4afda39709c2955",
     "name": "The Sea Explorer",
     "duration": 7,
@@ -56,6 +58,7 @@
     ]
   },
   {
+    "priceDiscount": 50,
     "startLocation": {
       "description": "Banff, CAN",
       "type": "Point",
@@ -70,6 +73,7 @@
       "2021-07-20T09:00:00.000Z",
       "2021-10-05T09:00:00.000Z"
     ],
+    "country": "Canada",
     "_id": "5c88fa8cf4afda39709c2951",
     "name": "The Forest Hiker",
     "duration": 5,
@@ -108,7 +112,8 @@
       }
     ]
   },
-  {
+  {    
+    "priceDiscount": 50,
     "startLocation": {
       "description": "Aspen, USA",
       "type": "Point",
@@ -123,6 +128,7 @@
       "2022-02-12T10:00:00.000Z",
       "2023-01-06T10:00:00.000Z"
     ],
+    "country": "USA",
     "_id": "5c88fa8cf4afda39709c295a",
     "name": "The Snow Adventurer",
     "duration": 4,
@@ -155,6 +161,7 @@
     ]
   },
   {
+    "priceDiscount": 50,
     "startLocation": {
       "description": "Las Vegas, USA",
       "type": "Point",
@@ -169,6 +176,7 @@
       "2022-03-20T10:00:00.000Z",
       "2022-08-12T09:00:00.000Z"
     ],
+    "country": "USA",
     "_id": "5c88fa8cf4afda39709c2961",
     "name": "The Park Camper",
     "duration": 10,
@@ -215,6 +223,7 @@
     ]
   },
   {
+    "priceDiscount": 50,
     "startLocation": {
       "description": "NYC, USA",
       "type": "Point",
@@ -229,6 +238,7 @@
       "2021-05-02T09:00:00.000Z",
       "2021-06-09T09:00:00.000Z"
     ],
+    "country": "USA",
     "_id": "5c88fa8cf4afda39709c295d",
     "name": "The City Wanderer",
     "duration": 9,
@@ -264,6 +274,7 @@
     ]
   },
   {
+    "priceDiscount": 50,
     "startLocation": {
       "description": "California, USA",
       "type": "Point",
@@ -278,6 +289,7 @@
       "2021-09-06T09:00:00.000Z",
       "2022-03-18T10:00:00.000Z"
     ],
+    "country": "USA",
     "_id": "5c88fa8cf4afda39709c2966",
     "name": "The Sports Lover",
     "duration": 14,
@@ -331,6 +343,8 @@
     ]
   },
   {
+    "priceDiscount": 50,
+    "country":"USA",
     "startLocation": {
       "description": "Utah, USA",
       "type": "Point",
@@ -380,6 +394,8 @@
     ]
   },
   {
+    "priceDiscount": 50,
+    "country": "USA",
     "startLocation": {
       "description": "Yellowknife, CAN",
       "type": "Point",
@@ -419,6 +435,8 @@
     ]
   },
   {
+    "priceDiscount": 50,
+    "country": "USA",
     "startLocation": {
       "description": "California, USA",
       "type": "Point",

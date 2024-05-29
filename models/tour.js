@@ -1,11 +1,12 @@
 const mongoose = require('mongoose');
+const User = require('./user');
 
 const tourSchema = new mongoose.Schema(
   {
     name: {
       type: String,
       required: [true, 'A tour must have a name'],
-      unique: true,
+      unique: [true, 'A tour"s name must be unique'],
       trim: true,
       maxlength: [40, 'A tour name must have less than 40 characters'],
     },
@@ -16,6 +17,7 @@ const tourSchema = new mongoose.Schema(
     country: {
       type: String,
       required: [true, 'A tour must have a country'],
+      enum: ['Egypt', 'USA', 'Canada'],
     },
     summary: {
       type: String,
@@ -26,18 +28,41 @@ const tourSchema = new mongoose.Schema(
       type: Number,
       required: [true, 'A tour must have a duration'],
     },
-    startPoint: {
-      type: String,
-      required: [true, 'A tour must have a start point'],
-      enum: {
-        values: ['Cairo', 'Alexandria'],
-        message: 'Start point must be Cairo or Alexandria',
-      },
-    },
     imageCover: {
       type: String,
       required: [true, 'A tour must have a cover image'],
     },
+    startLocation: {
+      //GeoJSON
+      type: {
+        type: String,
+        default: 'Point',
+        enum: ['Point'], // can be only point
+      },
+      coordinates: [Number],
+      address: String,
+      description: String,
+    },
+    locations: [
+      {
+        type: {
+          type: String,
+          default: 'Point',
+          enum: ['Point'], // can be only point
+        },
+        coordinates: [Number],
+        address: String,
+        description: String,
+        day: Number,
+      },
+    ],
+    guides: Array,
+    guests: [
+      {
+        type: mongoose.Schema.ObjectId,
+        ref: 'User',
+      },
+    ],
     description: {
       type: String,
       trim: true,
@@ -62,9 +87,8 @@ const tourSchema = new mongoose.Schema(
     },
     priceDiscount: {
       type: Number,
-      required: true,
       validate: {
-        validator: function(val) {
+        validator: function (val) {
           // this only points to the current price of New Document
           // won't work on update
           return val < this.price;
@@ -88,29 +112,41 @@ const tourSchema = new mongoose.Schema(
 );
 
 // VIRTUAL VARIABLES
-tourSchema.virtual('durationWeeks').get(function() {
+tourSchema.virtual('durationWeeks').get(function () {
   return this.duration / 7;
 });
 
-tourSchema.virtual('totalPrice').get(function() {
+tourSchema.virtual('totalPrice').get(function () {
   return this.numOfAdults * this.price;
 });
 
-tourSchema.virtual('priceDiscountPercentage').get(function() {
+tourSchema.virtual('priceDiscountPercentage').get(function () {
   return (this.priceDiscount / this.price) * 100;
 });
 
 // DOCUMENT MIDDLEWARE
-// like using pre('save') function to perform something before saving or creating document like slugify()
+tourSchema.pre('save', async function (next) {
+  const guidesPromises = this.guides.map(async (id) => await User.findById(id));
+  this.guides = await Promise.all(guidesPromises);
+  next();
+});
 
 // QUERY MIDDLEWARE
-tourSchema.pre(/^find/, function(next) {
+tourSchema.pre(/^find/, function (next) {
   this.find({ vipTour: { $ne: true } });
   next();
 });
 
+tourSchema.pre(/^find/, function (next) {
+  this.populate({
+    path: 'guests',
+    select: 'name',
+  });
+  next();
+});
+
 // AGGREGATION MIDDLEWARE
-tourSchema.pre('aggregate', function(next) {
+tourSchema.pre('aggregate', function (next) {
   this.pipeline().unshift({ $match: { vipTour: { $ne: true } } });
   next();
 });
