@@ -55,7 +55,7 @@ const createTour = catchAsync(async (req, res, next) => {
 
 const getTourById = catchAsync(async (req, res, next) => {
   const id = req.params.id;
-  const tour = await Tour.findOne({ _id: id });
+  const tour = await Tour.findOne({ _id: id }).populate('reviews');
   if (tour) {
     res.status(200).json({
       status: 'success',

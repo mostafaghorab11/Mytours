@@ -124,7 +124,15 @@ tourSchema.virtual('priceDiscountPercentage').get(function () {
   return (this.priceDiscount / this.price) * 100;
 });
 
+// virtual populating
+tourSchema.virtual('reviews', {
+  ref: 'Review',
+  foreignField: 'tour',
+  localField: '_id',
+});
+
 // DOCUMENT MIDDLEWARE
+// EMBEDDING
 tourSchema.pre('save', async function (next) {
   const guidesPromises = this.guides.map(async (id) => await User.findById(id));
   this.guides = await Promise.all(guidesPromises);
@@ -137,6 +145,7 @@ tourSchema.pre(/^find/, function (next) {
   next();
 });
 
+// REFERENCING
 tourSchema.pre(/^find/, function (next) {
   this.populate({
     path: 'guests',
@@ -149,6 +158,20 @@ tourSchema.pre(/^find/, function (next) {
 tourSchema.pre('aggregate', function (next) {
   this.pipeline().unshift({ $match: { vipTour: { $ne: true } } });
   next();
+});
+
+tourSchema.set('toJSON', {
+  virtuals: true, // Include virtuals for population
+  transform: (doc, ret) => {
+    const excludedVirtuals = [
+      'durationWeeks',
+      'id',
+      'priceDiscountPercentage',
+      'totalPrice',
+    ];
+    excludedVirtuals.forEach((field) => delete ret[field]);
+    return ret;
+  },
 });
 
 const Tour = mongoose.model('Tour', tourSchema);
