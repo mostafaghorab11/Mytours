@@ -2,7 +2,6 @@ const express = require("express");
 const { protect } = require("../controllers/auth");
 const {
   getAllUsers,
-  createUser,
   getUserById,
   updateUser,
   deleteUser,
@@ -13,7 +12,7 @@ const {
 const router = express.Router();
 
 // "/api/v1/users"
-router.route("/").get(getAllUsers).post(createUser);
+router.route("/").get(getAllUsers);
 
 router.route("/:id").get(getUserById).patch(updateUser).delete(deleteUser);
 

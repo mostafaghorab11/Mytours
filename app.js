@@ -7,10 +7,10 @@ const mongoSanitize = require('express-mongo-sanitize');
 const rateLimit = require('express-rate-limit');
 const cookieParser = require('cookie-parser');
 
-const authRoutes = require('./routes/auth.js');
-const userRoutes = require('./routes/user.js');
-const tourRoutes = require('./routes/tour.js');
-const reviewRoutes = require('./routes/review.js');
+const authRouter = require('./routes/auth.js');
+const userRouter = require('./routes/user.js');
+const tourRouter = require('./routes/tour.js');
+const reviewRouter = require('./routes/review.js');
 const { globalErrorsHandler } = require('./controllers/errorController.js');
 const AppError = require('./util/appError.js');
 
@@ -46,10 +46,10 @@ app.use('/api', limiter);
 // Data sanitization against NoSQL query injection
 app.use(mongoSanitize());
 
-app.use('/api/v1', authRoutes);
-app.use('/api/v1/users', userRoutes);
-app.use('/api/v1/tours', tourRoutes);
-app.use('/api/v1/reviews', reviewRoutes);
+app.use('/api/v1', authRouter);
+app.use('/api/v1/users', userRouter);
+app.use('/api/v1/tours', tourRouter);
+app.use('/api/v1/reviews', reviewRouter);
 
 app.all('*', (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));

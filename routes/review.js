@@ -5,21 +5,23 @@ const {
   getReviewById,
   updateReview,
   deleteReview,
+  setTourAndUserIds,
 } = require('../controllers/review');
 const { protect, restrictTo } = require('../controllers/auth');
 
-const router = express.Router();
+const router = express.Router({ mergeParams: true });
 
 // api/v1/reviews
+// api/v1/tours/:tourId/reviews
 router
   .route('/')
   .get(getAllReviews)
-  .post(protect, restrictTo('user'), createReview);
+  .post(protect, restrictTo('user'), setTourAndUserIds, createReview);
 
 router
   .route('/:id')
   .get(getReviewById)
   .patch(updateReview)
-  .delete(deleteReview);
+  .delete(protect, restrictTo('user'), deleteReview);
 
 module.exports = router;

@@ -1,6 +1,7 @@
 const User = require("../models/user");
 const AppError = require("../util/appError");
 const { catchAsync } = require("../util/catchAsync");
+const { deleteOne, updateOne, getOne, getAll } = require("./handlerFactory");
 
 const filterObj = (obj, ...allowedFields) => {
   const newObj = {};
@@ -10,53 +11,11 @@ const filterObj = (obj, ...allowedFields) => {
   return newObj;
 };
 
-const getAllUsers = catchAsync(async (req, res, next) => {
-  const users = await User.find();
-  res.status(200).json({
-    status: "success",
-    results: users.length,
-    data: {
-      users,
-    },
-  });
-});
-const createUser = catchAsync(async (req, res, next) => {
-  const newUser = await User.create(req.body);
-  res.status(201).json({
-    status: "success",
-    data: {
-      user: newUser,
-    },
-  });
-});
-const getUserById = catchAsync(async (req, res, next) => {
-  const user = await User.findById(req.params.id);
-  res.status(200).json({
-    status: "success",
-    data: {
-      user,
-    },
-  });
-});
-const updateUser = catchAsync(async (req, res, next) => {
-  const user = await User.findByIdAndUpdate(req.params.id, req.body, {
-    new: true,
-    runValidators: true,
-  });
-  res.status(200).json({
-    status: "success",
-    data: {
-      user,
-    },
-  });
-});
-const deleteUser = catchAsync(async (req, res, next) => {
-  const user = await User.findByIdAndUpdate(req.params.id, { active: false });
-  res.status(204).json({
-    status: "success",
-    data: null,
-  });
-});
+const getAllUsers = getAll(User);
+const getUserById = getOne(User);
+const updateUser = updateOne(User);
+const deleteUser = deleteOne(User);
+
 const updateMe = catchAsync(async (req, res, next) => {
   if (req.body.password || req.body.passwordConfirm) {
     throw new AppError(
@@ -86,7 +45,6 @@ const deleteMe = catchAsync(async (req, res, next) => {
 
 module.exports = {
   getAllUsers,
-  createUser,
   getUserById,
   updateUser,
   deleteUser,

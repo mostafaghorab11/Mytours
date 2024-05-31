@@ -12,9 +12,7 @@ const {
   // checkId
 } = require('../controllers/tour');
 
-const { createReview, getAllReviews } = require('../controllers/review');
-
-const { protect, restrictTo } = require('../controllers/auth');
+const reviewRouter = require('./review');
 
 const router = express.Router();
 
@@ -30,9 +28,6 @@ router.route('/').get(getAllTours).post(createTour);
 router.route('/:id').get(getTourById).put(updateTour).delete(deleteTour);
 
 // api/v1/tours/:tourId/reviews
-router
-  .route('/:tourId/reviews')
-  .get(protect, getAllReviews)
-  .post(protect, restrictTo('user'), createReview);
+router.use('/:tourId/reviews', reviewRouter);
 
 module.exports = router;
