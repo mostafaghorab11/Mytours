@@ -1,4 +1,5 @@
 const Review = require('../models/review');
+const { catchAsync } = require('../util/catchAsync');
 
 const getAllReviews = catchAsync(async (req, res, next) => {
   const reviews = await Review.find();
