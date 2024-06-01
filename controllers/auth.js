@@ -30,6 +30,7 @@ const generateTokens = (userId) => {
 };
 
 const createSendToken = (user, statusCode, res) => {
+  //TODO: REFRESH TOKEN SHOULD BE SAVED ON THE SERVER NOT CLIENT
   const { accessToken, refreshToken } = generateTokens(user._id);
 
   const cookieOptions = {
@@ -37,8 +38,8 @@ const createSendToken = (user, statusCode, res) => {
     httpOnly: true,
   };
   if (process.env.NODE_ENV === 'production') cookieOptions.secure = true;
-  res.cookie('jwt', accessToken, cookieOptions);
-  res.cookie('jwtRefresh', refreshToken, cookieOptions);
+  // res.cookie('jwt', accessToken, cookieOptions);
+  // res.cookie('jwtRefresh', refreshToken, cookieOptions);
 
   // Remove password from output
   user.password = undefined;
@@ -92,7 +93,7 @@ const protect = catchAsync(async (req, res, next) => {
   ) {
     token = req.headers.authorization.split(' ')[1];
   }
-
+  
   if (!token) {
     throw new AppError(
       'You are not logged in! Please log in to get access.',

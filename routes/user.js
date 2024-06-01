@@ -1,5 +1,5 @@
-const express = require("express");
-const { protect } = require("../controllers/auth");
+const express = require('express');
+const { protect, restrictTo } = require('../controllers/auth');
 const {
   getAllUsers,
   getUserById,
@@ -7,16 +7,22 @@ const {
   deleteUser,
   updateMe,
   deleteMe,
-} = require("../controllers/user");
+  getMe,
+} = require('../controllers/user');
 
 const router = express.Router();
 
+router.use(protect);
+
 // "/api/v1/users"
-router.route("/").get(getAllUsers);
+router.get('/me', getMe, getUserById);
+router.patch('/updateMe', updateMe);
+router.delete('/deleteMe', deleteMe);
 
-router.route("/:id").get(getUserById).patch(updateUser).delete(deleteUser);
+router.use(restrictTo('admin'));
 
-router.patch("/updateMe", protect, updateMe);
-router.delete("/deleteMe", protect, deleteMe);
+router.route('/').get(getAllUsers);
+
+router.route('/:id').get(getUserById).patch(updateUser).delete(deleteUser);
 
 module.exports = router;

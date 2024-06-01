@@ -131,6 +131,8 @@ tourSchema.virtual('reviews', {
   localField: '_id',
 });
 
+tourSchema.index({price: 1, ratingAverage: -1});
+
 // DOCUMENT MIDDLEWARE
 // EMBEDDING
 tourSchema.pre('save', async function (next) {
