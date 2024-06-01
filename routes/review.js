@@ -11,14 +11,14 @@ const { protect, restrictTo } = require('../controllers/auth');
 
 const router = express.Router({ mergeParams: true });
 
-router.use(protect);
-
 // api/v1/reviews
 // api/v1/tours/:tourId/reviews
 router
   .route('/')
   .get(getAllReviews)
-  .post(restrictTo('user'), setTourAndUserIds, createReview);
+  .post(protect, restrictTo('user'), setTourAndUserIds, createReview);
+
+router.use(protect);
 
 router
   .route('/:id')
