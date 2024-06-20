@@ -67,9 +67,16 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: 'default.jpg',
   },
+  isVerified: {
+    type: Boolean,
+    default: false,
+  },
+  verified: Date,
+  verificationToken: String,
   passwordChangedAt: Date,
   resetToken: String,
   resetTokenExpiry: Date,
+  // when we delete user, we change active to false
   active: {
     type: Boolean,
     default: true,

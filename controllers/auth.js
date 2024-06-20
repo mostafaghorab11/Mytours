@@ -7,6 +7,7 @@ const User = require('../models/user');
 const { catchAsync } = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 const sendEmail = require('../utils/email');
+const sendVerificationEmail = require('../utils/sendVerificationEmail');
 
 const signToken = (id, secret, expiresIn) => {
   return jwt.sign({ id }, secret, {
@@ -55,15 +56,54 @@ const createSendToken = (user, statusCode, res) => {
 };
 
 const signup = catchAsync(async (req, res, next) => {
+  // first registered user is an admin
+  const isFirstAccount = (await User.countDocuments({})) === 0;
+  const role = isFirstAccount ? 'admin' : 'user';
+
+  const verificationToken = crypto.randomBytes(40).toString('hex');
+
   const newUser = await User.create({
     name: req.body.name,
     username: req.body.username,
     email: req.body.email,
+    role: role,
     password: req.body.password,
     passwordConfirm: req.body.passwordConfirm,
+    verificationToken: verificationToken,
+  });
+
+  // Send an confirmation email to the new user
+  sendVerificationEmail({
+    email: req.body.email,
+    name: req.body.name,
+    verificationToken: verificationToken,
   });
   createSendToken(newUser, 201, res);
 });
+
+const verifyEmail = async (req, res) => {
+  console.log(req.query);
+  const { token, email } = req.query;
+  const user = await User.findOne({ email });
+
+  if (!user) {
+    return new AppError('Verification failed', 401);
+  }
+
+  if (user.verificationToken !== token) {
+    return new AppError('Verification failed', 401);
+  }
+
+  await User.findOneAndUpdate(
+    { email: email },
+    { isVerified: true, verified: Date.now(), verificationToken: '' },
+    { runValidators: false }
+  );
+
+  res.status(200).json({
+    status: 'success',
+  });
+};
 
 const login = catchAsync(async (req, res, next) => {
   const { email, password } = req.body;
@@ -301,5 +341,6 @@ module.exports = {
   refresh,
   restrictTo,
   updatePassword,
-  isLoggedIn
+  isLoggedIn,
+  verifyEmail,
 };

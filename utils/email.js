@@ -18,8 +18,8 @@ const sendEmail = async (options) => {
     from: "vetghorab@gmail.com",
     to: options.email,
     subject: options.subject,
-    text: options.message,
     // html:
+    html: options.message,
   };
 
   // 3) Actually send the email

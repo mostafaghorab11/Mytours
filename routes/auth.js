@@ -1,4 +1,4 @@
-const express = require("express");
+const express = require('express');
 const {
   login,
   signup,
@@ -8,27 +8,29 @@ const {
   refresh,
   protect,
   updatePassword,
-} = require("../controllers/auth");
+  verifyEmail,
+} = require('../controllers/auth');
 
-const googlePassport = require("../config/google-passport");
+const googlePassport = require('../config/google-passport');
 
 const router = express.Router();
 
 // "api/v1"
-router.route("/signup").get().post(signup);
-router.route("/login").get().post(login);
-router.route("/refresh").get(refresh);
-router.route("/dashboard").get(protect, dashboard);
+router.route('/signup').post(signup);
+router.route('/login').post(login);
+router.route('/refresh').get(refresh);
+router.route('/dashboard').get(protect, dashboard);
+router.route('/verify-email').post(verifyEmail);
 
 router.get(
-  "/login/google",
-  googlePassport.authenticate("google", { scope: ["profile", "email"] }),
+  '/login/google',
+  googlePassport.authenticate('google', { scope: ['profile', 'email'] }),
   dashboard
 ); // Request Google profile and email
 
-router.post("/forget-password", forgetPassword);
+router.post('/forget-password', forgetPassword);
 
-router.patch("/reset-password/:token", resetPassword);
-router.patch("/updateMyPassword", protect, updatePassword);
+router.patch('/reset-password/:token', resetPassword);
+router.patch('/updateMyPassword', protect, updatePassword);
 
 module.exports = router;
