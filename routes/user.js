@@ -8,6 +8,8 @@ const {
   updateMe,
   deleteMe,
   getMe,
+  uploadUserPhoto,
+  resizeUserPhoto,
 } = require('../controllers/user');
 
 const router = express.Router();
@@ -16,7 +18,7 @@ router.use(protect);
 
 // "/api/v1/users"
 router.get('/me', getMe, getUserById);
-router.patch('/updateMe', updateMe);
+router.patch('/updateMe', uploadUserPhoto, resizeUserPhoto, updateMe);
 router.delete('/deleteMe', deleteMe);
 
 router.use(restrictTo('admin'));

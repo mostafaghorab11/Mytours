@@ -9,6 +9,8 @@ const {
   getTourStats,
   topFive,
   getMonthlyPlan,
+  uploadTourImages,
+  resizeTourImages,
 } = require('../controllers/tour');
 
 const reviewRouter = require('./review');
@@ -27,14 +29,27 @@ router
   .get(protect, restrictTo('admin', 'lead-guide'), getMonthlyPlan);
 
 router
-  .route('/')
-  .get(getAllTours)
-  .post(protect, restrictTo('admin', 'lead-guide'), createTour);
-router
   .route('/:id')
   .get(getTourById)
-  .put(protect, restrictTo('admin', 'lead-guide'), updateTour)
+  .patch(
+    protect,
+    restrictTo('admin', 'lead-guide'),
+    uploadTourImages,
+    resizeTourImages,
+    updateTour
+  )
   .delete(protect, restrictTo('admin', 'lead-guide'), deleteTour);
+
+router
+  .route('/')
+  .get(getAllTours)
+  .post(
+    protect,
+    restrictTo('admin', 'lead-guide'),
+    uploadTourImages,
+    resizeTourImages,
+    createTour
+  );
 
 // api/v1/tours/:tourId/reviews
 router.use('/:tourId/reviews', reviewRouter);
