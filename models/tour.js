@@ -1,3 +1,4 @@
+const slugify = require('slugify');
 const mongoose = require('mongoose');
 const User = require('./user');
 
@@ -10,6 +11,7 @@ const tourSchema = new mongoose.Schema(
       trim: true,
       maxlength: [40, 'A tour name must have less than 40 characters'],
     },
+    slug: String,
     price: {
       type: Number,
       required: [true, 'A tour must have a price'],
@@ -80,6 +82,7 @@ const tourSchema = new mongoose.Schema(
       min: 1,
       max: 5,
       default: 4.5,
+      set: (val) => Math.round(val * 10) / 10,
     },
     ratingQuantity: {
       type: Number,
@@ -111,6 +114,10 @@ const tourSchema = new mongoose.Schema(
   }
 );
 
+tourSchema.index({ price: 1, ratingAverage: -1 });
+tourSchema.index({ slug: 1 });
+tourSchema.index({ startLocation: '2dsphere' });
+
 // VIRTUAL VARIABLES
 tourSchema.virtual('durationWeeks').get(function () {
   return this.duration / 7;
@@ -131,9 +138,12 @@ tourSchema.virtual('reviews', {
   localField: '_id',
 });
 
-tourSchema.index({price: 1, ratingAverage: -1});
+// DOCUMENT MIDDLEWARE: runs before .save() and .create()
+tourSchema.pre('save', function (next) {
+  this.slug = slugify(this.name, { lower: true });
+  next();
+});
 
-// DOCUMENT MIDDLEWARE
 // EMBEDDING
 tourSchema.pre('save', async function (next) {
   const guidesPromises = this.guides.map(async (id) => await User.findById(id));
