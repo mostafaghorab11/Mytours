@@ -1,3 +1,4 @@
+const path = require('path');
 const express = require('express');
 require('dotenv').config();
 const session = require('express-session');
@@ -6,15 +7,21 @@ const morgan = require('morgan');
 const mongoSanitize = require('express-mongo-sanitize');
 const rateLimit = require('express-rate-limit');
 const cookieParser = require('cookie-parser');
+const hpp = require('hpp');
 
 const authRouter = require('./routes/auth.js');
 const userRouter = require('./routes/user.js');
 const tourRouter = require('./routes/tour.js');
 const reviewRouter = require('./routes/review.js');
 const { globalErrorsHandler } = require('./controllers/errorController.js');
-const AppError = require('./util/appError.js');
+const AppError = require('./utils/appError.js');
 
 const app = express();
+
+app.set('views', path.join(__dirname, 'views'));
+
+app.use(express.static(path.join(__dirname, 'public')));
+
 app.use(express.json()); // to handle req.body
 app.use(cookieParser());
 
@@ -46,6 +53,14 @@ app.use('/api', limiter);
 // Data sanitization against NoSQL query injection
 app.use(mongoSanitize());
 
+// Prevent parameter pollution
+app.use(
+  hpp({
+    whitelist: ['duration', 'ratingQuantity', 'ratingAverage', 'price'],
+  })
+);
+
+// Routes
 app.use('/api/v1', authRouter);
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/tours', tourRouter);
