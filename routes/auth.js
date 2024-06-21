@@ -9,6 +9,7 @@ const {
   protect,
   updatePassword,
   verifyEmail,
+  logout,
 } = require('../controllers/auth');
 
 const googlePassport = require('../config/google-passport');
@@ -21,6 +22,7 @@ router.route('/login').post(login);
 router.route('/refresh').get(refresh);
 router.route('/dashboard').get(protect, dashboard);
 router.route('/verify-email').post(verifyEmail);
+router.route('/logout').get(protect, logout);
 
 router.get(
   '/login/google',

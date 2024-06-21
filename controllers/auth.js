@@ -239,6 +239,22 @@ const refresh = catchAsync(async (req, res) => {
   }
 });
 
+const logout = async (req, res) => {
+  await Token.findOneAndDelete({ user: req.user._id });
+
+  res.cookie('jwt', 'logout', {
+    httpOnly: true,
+    expires: new Date(Date.now()),
+  });
+  res.cookie('jwtRefresh', 'logout', {
+    httpOnly: true,
+    expires: new Date(Date.now()),
+  });
+  res.status(200).json({
+    status:'success',
+  });
+};
+
 const forgetPassword = catchAsync(async (req, res, next) => {
   const { email } = req.body;
 
@@ -370,6 +386,7 @@ module.exports = {
   signup,
   login,
   protect,
+  logout,
   dashboard,
   forgetPassword,
   resetPassword,
