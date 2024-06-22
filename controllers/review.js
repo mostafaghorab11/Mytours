@@ -1,4 +1,5 @@
 const Review = require('../models/review');
+const { catchAsync } = require('../utils/catchAsync');
 const {
   deleteOne,
   updateOne,
@@ -14,7 +15,17 @@ const setTourAndUserIds = (req, res, next) => {
 };
 
 const getAllReviews = getAll(Review);
-const createReview = createOne(Review);
+const createReview = catchAsync(async (req, res, next) => {
+  // prevent duplicate reviews from same user to save tour
+  const alreadySubmitted = await Review.getOne({
+    tour: req.body.tour,
+    user: req.body.user,
+  });
+  if (alreadySubmitted) {
+    return next(new AppError('Review already submitted', 400));
+  }
+  createOne(Review);
+});
 const getReviewById = getOne(Review);
 const updateReview = updateOne(Review);
 const deleteReview = deleteOne(Review);

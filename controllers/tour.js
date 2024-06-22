@@ -39,14 +39,17 @@ const uploadTourImages = upload.fields([
 ]);
 
 const resizeTourImages = catchAsync(async (req, res, next) => {
-  if (!req.files.imageCover || !req.files.images) return next();
+  if (!req.files.imageCover && !req.files.images) return next();
 
-  req.body.imageCover = `tour-${req.params.id}-${Date.now()}-cover.jpeg`;
+  req.body.imageCover = `${
+    req.files.imageCover[0].originalname.split('.')[0]
+  }-${Date.now()}-cover.jpeg`;
+
   await sharp(req.files.imageCover[0].buffer)
     .resize(2000, 1333)
     .toFormat('jpeg')
     .jpeg({ quality: 90 })
-    .toFile(`public/img/tours/${req.body.imageCover}`); 
+    .toFile(`public/img/tours/${req.body.imageCover}`);
 
   req.body.images = [];
   const promises = req.files.images.map(async (file) => {
@@ -72,7 +75,10 @@ const topFive = (req, res, next) => {
 
 const getAllTours = getAll(Tour);
 const createTour = createOne(Tour);
-const getTourById = getOne(Tour, { path: 'reviews' });
+const getTourById = getOne(Tour, [
+  { path: 'guides', select: 'email name' },
+  { path: 'reviews' },
+]);
 const updateTour = updateOne(Tour);
 const deleteTour = deleteOne(Tour);
 

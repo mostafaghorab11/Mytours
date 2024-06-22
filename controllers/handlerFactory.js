@@ -40,6 +40,7 @@ const getOne = (Model, popOptions) =>
   catchAsync(async (req, res, next) => {
     const id = req.params.id;
     let query = await Model.findOne({ _id: id });
+    
     if (popOptions) query = query.populate(popOptions);
     const doc = await query;
     if (doc) {
@@ -68,7 +69,7 @@ const updateOne = (Model) =>
         },
       });
     } else {
-      return next(new AppError(`No ${doc} for that ID`, 404));
+      return next(new AppError(`No document for that ID`, 404));
     }
   });
 

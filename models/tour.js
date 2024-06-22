@@ -58,7 +58,12 @@ const tourSchema = new mongoose.Schema(
         day: Number,
       },
     ],
-    guides: Array,
+    guides: [
+      {
+        type: mongoose.Schema.ObjectId,
+        ref: 'User',
+      },
+    ],
     guests: [
       {
         type: mongoose.Schema.ObjectId,
@@ -169,6 +174,11 @@ tourSchema.pre(/^find/, function (next) {
 // AGGREGATION MIDDLEWARE
 tourSchema.pre('aggregate', function (next) {
   this.pipeline().unshift({ $match: { vipTour: { $ne: true } } });
+  next();
+});
+
+tourSchema.pre('remove', async function (next) {
+  await this.model('Review').deleteMany({ tour: this._id });
   next();
 });
 

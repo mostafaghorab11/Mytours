@@ -7,7 +7,7 @@ const tokenSchema = new mongoose.Schema(
     userAgent: { type: String, required: true },
     isValid: { type: Boolean, default: true },
     user: {
-      type: mongoose.Types.ObjectId,
+      type: mongoose.Schema.ObjectId,
       ref: 'User',
       required: true,
     },

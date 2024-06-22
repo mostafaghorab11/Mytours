@@ -76,6 +76,7 @@ const userSchema = new mongoose.Schema({
   passwordChangedAt: Date,
   resetToken: String,
   resetTokenExpiry: Date,
+  secret: String,
   // when we delete user, we change active to false
   active: {
     type: Boolean,
@@ -105,14 +106,17 @@ userSchema.pre('save', async function (next) {
 
 userSchema.pre('save', function (next) {
   if (!this.isModified('password') || this.isNew) return next();
-
   this.passwordChangedAt = Date.now() - 1000;
   next();
 });
 
 userSchema.pre(/^find/, function (next) {
-  // this points to the current query
   this.find({ active: { $ne: false } });
+  next();
+});
+
+userSchema.pre('remove', async function (next) {
+  await this.model('Review').deleteMany({ user: this._id });
   next();
 });
 
