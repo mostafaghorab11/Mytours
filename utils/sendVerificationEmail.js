@@ -1,7 +1,8 @@
 const sendEmail = require('./email');
+require('dotenv').config();
 
-const sendVerificationEmail = ({ email, name, verificationToken }) => {
-  const verifyEmail = `http://localhost:${process.env.PORT}/api/v1/verify-email?token=${verificationToken}&email=${email}`;
+const sendVerificationEmail = async ({ email, name, verificationToken }) => {
+  const verifyEmail = `http://localhost:${process.env.PORT}/api/v1/verify-email?token=${verificationToken}`;
   const message = `
   <h4> Hello, ${name} </h4>
   <p>
@@ -9,8 +10,8 @@ const sendVerificationEmail = ({ email, name, verificationToken }) => {
   </p>
   <a href="${verifyEmail}">Verify Email</a> 
   `;
-
-  return sendEmail({
+  
+  await sendEmail({
     email: email,
     subject: 'Email confirmation',
     message: `

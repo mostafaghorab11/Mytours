@@ -1,6 +1,8 @@
-const nodemailer = require("nodemailer");
+const nodemailer = require('nodemailer');
+const { catchAsync } = require('./catchAsync');
+require('dotenv').config();
 
-const sendEmail = async (options) => {
+const sendEmail = catchAsync(async (options) => {
   // 1) Create a transporter
   const transporter = nodemailer.createTransport({
     host: process.env.EMAIL_HOST,
@@ -15,7 +17,7 @@ const sendEmail = async (options) => {
 
   // 2) Define the email options
   const mailOptions = {
-    from: "vetghorab@gmail.com",
+    from: 'vetghorab@gmail.com',
     to: options.email,
     subject: options.subject,
     // html:
@@ -24,6 +26,6 @@ const sendEmail = async (options) => {
 
   // 3) Actually send the email
   await transporter.sendMail(mailOptions);
-};
+});
 
 module.exports = sendEmail;

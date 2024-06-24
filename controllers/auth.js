@@ -11,27 +11,7 @@ const sendEmail = require('../utils/email');
 const sendVerificationEmail = require('../utils/sendVerificationEmail');
 const Token = require('../models/token');
 const { generateQRURL, verifyTOTP } = require('../utils/2FA');
-
-const signToken = (payload, secret, expiresIn) => {
-  return jwt.sign(payload, secret, {
-    expiresIn: expiresIn,
-  });
-};
-
-const generateTokens = (userId, dbRefreshToken) => {
-  const accessToken = signToken(
-    { userId },
-    process.env.JWT_SECRET_KEY,
-    process.env.ACCESS_TOKEN_EXPIRES_IN
-  );
-  const refreshToken = signToken(
-    { userId: userId, refreshToken: dbRefreshToken },
-    process.env.JWT_SECRET_KEY,
-    process.env.REFRESH_TOKEN_EXPIRES_IN
-  );
-
-  return { accessToken, refreshToken };
-};
+const { generateTokens } = require('../utils/jwt');
 
 const createSendToken = async (user, statusCode, res, dbRefreshToken) => {
   const { accessToken, refreshToken } = generateTokens(
@@ -91,7 +71,7 @@ const signup = catchAsync(async (req, res, next) => {
   const qrURL = generateQRURL(userSecret.base32, req.body.email);
 
   // Send a confirmation email to the new user
-  sendVerificationEmail({
+  await sendVerificationEmail({
     email: req.body.email,
     name: req.body.name,
     verificationToken: verificationToken,
@@ -100,11 +80,12 @@ const signup = catchAsync(async (req, res, next) => {
 });
 
 const verifyEmail = catchAsync(async (req, res, next) => {
-  const { token, email } = req.query;
+  const { token } = req.query;
+  const email = req.user.email;
   const user = await User.findOne({ email });
 
   if (!user) {
-    return next(new AppError('Verification failed', 401));
+    return next(new AppError('Verification failed please log in', 401));
   }
 
   if (user.verificationToken !== token) {
@@ -334,7 +315,7 @@ const resetPassword = catchAsync(async (req, res, next) => {
     .createHash('sha256')
     .update(req.params.token)
     .digest('hex');
-  const { password } = req.body;
+  const { password, passwordConfirm } = req.body;
 
   const user = await User.findOne({
     resetToken: hashedToken,
@@ -345,7 +326,7 @@ const resetPassword = catchAsync(async (req, res, next) => {
   }
 
   user.password = password;
-  user.passwordConfirm = req.body.passwordConfirm;
+  user.passwordConfirm = passwordConfirm;
   user.resetToken = undefined;
   user.resetTokenExpiry = undefined;
   await user.save();

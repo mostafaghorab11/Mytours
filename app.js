@@ -36,7 +36,7 @@ if (process.env.NODE_ENV === 'development') {
     session({
       secret: process.env.SESSION_SECRET,
       resave: false,
-      saveUninitialized: true,
+      saveUninitialized: false,
       cookie: { secure: false }, // Set to true if using HTTPS only
     })
   );
