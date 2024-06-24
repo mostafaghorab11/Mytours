@@ -8,13 +8,12 @@ const mongoSanitize = require('express-mongo-sanitize');
 const rateLimit = require('express-rate-limit');
 const cookieParser = require('cookie-parser');
 const hpp = require('hpp');
+const { graphqlHTTP } = require('express-graphql');
 
-const authRouter = require('./routes/auth.js');
-const userRouter = require('./routes/user.js');
-const tourRouter = require('./routes/tour.js');
-const reviewRouter = require('./routes/review.js');
 const { globalErrorsHandler } = require('./controllers/errorController.js');
 const AppError = require('./utils/appError.js');
+const graphqlSchema = require('./graphql/schema.js');
+const graphqlResolver = require('./graphql/resolvers.js');
 
 const app = express();
 
@@ -61,10 +60,13 @@ app.use(
 );
 
 // Routes
-app.use('/api/v1', authRouter);
-app.use('/api/v1/users', userRouter);
-app.use('/api/v1/tours', tourRouter);
-app.use('/api/v1/reviews', reviewRouter);
+app.use(
+  '/graphql',
+  graphqlHTTP({
+    schema: graphqlSchema,
+    rootValue: graphqlResolver,
+  })
+);
 
 app.all('*', (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
