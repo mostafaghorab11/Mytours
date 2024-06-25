@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "dev": "nodemon server.js",
-    "prod": "NODE_ENV=production nodemon server.js"
+    "prod": "NODE_ENV=production nodemon server.js",
+    "test": "jest"
   },
   "author": "",
   "license": "ISC",
@@ -36,6 +37,7 @@
     "validator": "^13.11.0"
   },
   "devDependencies": {
+    "jest": "^29.7.0",
     "nodemon": "^3.1.0"
   }
 }
