@@ -8,7 +8,7 @@ const mongoSanitize = require('express-mongo-sanitize');
 const rateLimit = require('express-rate-limit');
 const cookieParser = require('cookie-parser');
 const hpp = require('hpp');
-const { graphqlHTTP } = require('express-graphql');
+const graphqlHttp = require('graphql-http/lib/use/express');
 
 const { globalErrorsHandler } = require('./controllers/errorController.js');
 const AppError = require('./utils/appError.js');
@@ -60,12 +60,12 @@ app.use(
 );
 
 // Routes
-app.use(
-  '/graphql',
-  graphqlHTTP({
+app.all('/graphql', (req, res) =>
+  graphqlHttp.createHandler({
     schema: graphqlSchema,
     rootValue: graphqlResolver,
-  })
+    context: { req, res },
+  })(req, res)
 );
 
 app.all('*', (req, res, next) => {

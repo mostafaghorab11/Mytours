@@ -55,9 +55,10 @@ const signup = catchAsync(async (req, res, next) => {
   const isFirstAccount = (await User.countDocuments({})) === 0;
   const role = isFirstAccount ? 'admin' : 'user';
 
+  // Create a verification token for the new user to use it to verify email using email verification
   const verificationToken = crypto.randomBytes(40).toString('hex');
 
-  // Generate a secret key for the user
+  // Generate a secret key for the user to use it in 2FA
   const userSecret = speakeasy.generateSecret({ length: 20 });
 
   const newUser = await User.create({
