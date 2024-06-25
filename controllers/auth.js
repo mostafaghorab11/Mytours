@@ -134,7 +134,7 @@ const verifyWith2FA = async (req, res, next) => {
 };
 
 const login = catchAsync(async (req, res, next) => {
-  const { email, password, token } = req.body;
+  const { email, password } = req.body;
   if (!email || !password) {
     return next(new AppError('Please enter email and password', 400));
   }

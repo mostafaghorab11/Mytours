@@ -65,6 +65,19 @@ app.all('/graphql', (req, res) =>
     schema: graphqlSchema,
     rootValue: graphqlResolver,
     context: { req, res },
+    formatError(err) {
+      if (!err.originalError) {
+          return err;
+      }
+      const data = err.originalError.data;
+      const message = err.message || 'An error occurred.';
+      const code = err.originalError.code || 500;
+      return {
+          message: message,
+          status: code,
+          data: data,
+      };
+  },
   })(req, res)
 );
 
