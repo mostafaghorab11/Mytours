@@ -6,6 +6,8 @@
   "scripts": {
     "dev": "nodemon server.js",
     "prod": "NODE_ENV=production nodemon server.js",
+    "build": "NODE_ENV=production nodemon server.js",
+    "deploy": "NODE_ENV=production nodemon server.js",
     "test": "jest"
   },
   "author": "",
