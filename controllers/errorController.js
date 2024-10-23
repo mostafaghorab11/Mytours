@@ -7,7 +7,6 @@ const globalErrorsHandler = (err, req, res, next) => {
     sendErrorDev(err, res);
   } else if (process.env.NODE_ENV === 'production') {
     let error = { name: err.name, message: err.message, ...err };
-    console.log(error);
     if (error.name === 'CastError') error = handleCastErrorDB(error);
     if (error.code === 11000) error = handleDoubleDocumentErrorDB(error);
     if (error.name === 'ValidationError')

@@ -5,7 +5,11 @@
   "main": "server.js",
   "scripts": {
     "dev": "nodemon server.js",
-    "deploy": "NODE_ENV=production nodemon server.js"
+    "prod": "NODE_ENV=production nodemon server.js",
+    "build": "NODE_ENV=production nodemon server.js",
+    "deploy": "NODE_ENV=production nodemon server.js",
+    "test": "jest",
+    "vercel-build": "echo hello"
   },
   "author": "",
   "license": "ISC",

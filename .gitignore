@@ -2,3 +2,4 @@
 /dev-data/
 .env
 /public
+.vercel
