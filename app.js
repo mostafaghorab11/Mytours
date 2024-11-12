@@ -15,17 +15,17 @@ const tourRouter = require('./routes/tour.js');
 const reviewRouter = require('./routes/review.js');
 const { globalErrorsHandler } = require('./controllers/errorController.js');
 const AppError = require('./utils/appError.js');
+// const viewRouter = require('./routes/viewRoutes.js');
 
 const app = express();
 
 app.set('views', path.join(__dirname, 'views'));
+// app.set('view engine', 'pug');
 
-app.use(express.static(path.join(__dirname, 'public')));
-
-app.use(express.json()); // to handle req.body
 app.use(cookieParser());
 
 // 1) GLOBAL MIDDLEWARES
+app.use(express.static(path.join(__dirname, 'public')));
 // Set security HTTP headers
 app.use(helmet());
 
@@ -50,6 +50,10 @@ const limiter = rateLimit({
 });
 app.use('/api', limiter);
 
+app.use(express.json({ limit: '10kb' })); // to handle req.body
+app.use(express.urlencoded({ extended: true, limit: '10kb' }));
+app.use(cookieParser());
+
 // Data sanitization against NoSQL query injection
 app.use(mongoSanitize());
 
@@ -61,6 +65,7 @@ app.use(
 );
 
 // Routes
+// app.use('/', viewRouter);
 app.use('/api/v1', authRouter);
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/tours', tourRouter);
