@@ -323,7 +323,7 @@ body {
   }
 }
 .header__logo img {
-  height: 7rem;
+  height: 3.5rem;
 }
 @media only screen and (max-width: 62.5em) {
   .header__logo {
@@ -823,7 +823,7 @@ body {
   }
 }
 .footer__logo img {
-  height: 5rem;
+  height: 3rem;
 }
 .footer__nav {
   list-style: none;

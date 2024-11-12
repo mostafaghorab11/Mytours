@@ -15,12 +15,12 @@ const tourRouter = require('./routes/tour.js');
 const reviewRouter = require('./routes/review.js');
 const { globalErrorsHandler } = require('./controllers/errorController.js');
 const AppError = require('./utils/appError.js');
-// const viewRouter = require('./routes/viewRoutes.js');
+const viewRouter = require('./routes/viewRoutes.js');
 
 const app = express();
 
 app.set('views', path.join(__dirname, 'views'));
-// app.set('view engine', 'pug');
+app.set('view engine', 'pug');
 
 app.use(cookieParser());
 
@@ -65,7 +65,7 @@ app.use(
 );
 
 // Routes
-// app.use('/', viewRouter);
+app.use('/', viewRouter);
 app.use('/api/v1', authRouter);
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/tours', tourRouter);

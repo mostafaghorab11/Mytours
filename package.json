@@ -5,15 +5,17 @@
   "main": "server.js",
   "scripts": {
     "dev": "nodemon server.js",
-    "prod": "NODE_ENV=production nodemon server.js",
-    "build": "NODE_ENV=production nodemon server.js",
-    "deploy": "NODE_ENV=production nodemon server.js",
+    "prod": "NODE_ENV=production node server.js",
+    "build": "NODE_ENV=production node server.js",
+    "deploy": "NODE_ENV=production node server.js",
     "test": "jest",
     "vercel-build": "echo hello"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@babel/polyfill": "^7.12.1",
+    "axios": "^1.7.7",
     "bcrypt": "^5.1.1",
     "cookie-parser": "^1.4.6",
     "dompurify": "^3.1.4",
@@ -33,6 +35,7 @@
     "passport": "^0.7.0",
     "passport-google-oauth2": "^0.2.0",
     "passport-jwt": "^4.0.1",
+    "pug": "^3.0.3",
     "qrcode": "^1.5.3",
     "sharp": "^0.33.4",
     "slugify": "^1.6.6",
